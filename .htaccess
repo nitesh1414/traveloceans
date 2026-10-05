@@ -1,0 +1,43 @@
+# Travel Oceans CMS - Apache config
+DirectoryIndex index.php
+
+# Disable directory listing
+Options -Indexes
+
+# Security headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Prevent access to sensitive files
+<FilesMatch "\.(env|sql|md|lock|yml|yaml|json|log)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+<FilesMatch "^(config|db|functions)\.php$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Pretty URLs (optional)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # RewriteEngine On
+  # RewriteRule ^services/([a-z0-9-]+)/?$ services.php?slug=$1 [L,QSA]
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+</IfModule>
+
+# UTF-8
+AddDefaultCharset UTF-8
